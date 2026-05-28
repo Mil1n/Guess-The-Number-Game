@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess The Number — AI Game</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell" aria-labelledby="game-title">
+      <section class="hero-card">
+        <p class="eyebrow">🎮 AI Mini Game</p>
+        <h1 id="game-title">Guess The Number</h1>
+        <p class="intro">
+          Я загадал число. Атмосфера накаляется — угадай его за минимальное количество попыток!
+        </p>
+
+        <div class="status-grid" aria-label="Статистика игры">
+          <div>
+            <span class="stat-label">Диапазон</span>
+            <strong id="rangeLabel">1–100</strong>
+          </div>
+          <div>
+            <span class="stat-label">Попытки</span>
+            <strong id="attemptsLabel">0</strong>
+          </div>
+          <div>
+            <span class="stat-label">Рекорд</span>
+            <strong id="recordLabel">—</strong>
+          </div>
+        </div>
+
+        <form class="guess-form" id="guessForm">
+          <label for="guessInput">Твой ход</label>
+          <div class="input-row">
+            <input
+              id="guessInput"
+              name="guess"
+              type="number"
+              min="1"
+              max="100"
+              placeholder="Введи число"
+              autocomplete="off"
+              required
+            />
+            <button type="submit">Проверить</button>
+          </div>
+        </form>
+
+        <p id="message" class="message" role="status" aria-live="polite">
+          Привет, игрок! Я уже загадал число от 1 до 100. Сделай первый ход 🚀
+        </p>
+
+        <div class="actions" aria-label="Настройки игры">
+          <button id="newGameButton" type="button" class="secondary">Сыграть ещё</button>
+          <button id="hardModeButton" type="button" class="secondary">Hard Mode: выкл</button>
+        </div>
+      </section>
+
+      <section class="settings-card" aria-labelledby="settings-title">
+        <h2 id="settings-title">Настроить диапазон</h2>
+        <form id="rangeForm" class="range-form">
+          <label>
+            От
+            <input id="minInput" type="number" value="1" required />
+          </label>
+          <label>
+            До
+            <input id="maxInput" type="number" value="100" required />
+          </label>
+          <button type="submit">Новая игра</button>
+        </form>
+        <p class="hint">
+          Hard Mode даёт ограничение по попыткам: чем шире диапазон, тем больше шансов тебе понадобится.
+        </p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
