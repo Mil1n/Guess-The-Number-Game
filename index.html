@@ -41,6 +41,7 @@
               max="100"
               placeholder="Введи число"
               autocomplete="off"
+              aria-describedby="message historyTitle"
               required
             />
             <button type="submit">Проверить</button>
@@ -51,31 +52,47 @@
           Привет, игрок! Я уже загадал число от 1 до 100. Сделай первый ход 🚀
         </p>
 
-        <div class="actions" aria-label="Настройки игры">
+        <div class="actions" aria-label="Действия игры">
           <button id="newGameButton" type="button" class="secondary">Сыграть ещё</button>
-          <button id="hardModeButton" type="button" class="secondary">Hard Mode: выкл</button>
+          <button id="giveUpButton" type="button" class="secondary danger-action">Сдаться</button>
         </div>
+
+        <section class="history-card" aria-labelledby="historyTitle">
+          <h2 id="historyTitle">История попыток</h2>
+          <p id="emptyHistory" class="empty-history">Пока ходов нет — начни с любого числа в диапазоне.</p>
+          <ol id="historyList" class="history-list" aria-live="polite"></ol>
+        </section>
       </section>
 
       <section class="settings-card" aria-labelledby="settings-title">
         <h2 id="settings-title">Настроить диапазон</h2>
         <form id="rangeForm" class="range-form">
-          <label>
+          <label for="minInput">
             От
             <input id="minInput" type="number" value="1" required />
           </label>
-          <label>
+          <label for="maxInput">
             До
             <input id="maxInput" type="number" value="100" required />
           </label>
+          <label for="difficultySelect">
+            Сложность
+            <select id="difficultySelect" aria-describedby="difficultyHint">
+              <option value="easy">Easy — больше попыток</option>
+              <option value="normal" selected>Normal — без лимита</option>
+              <option value="hard">Hard — строгий лимит</option>
+              <option value="expert">Expert — без направления</option>
+            </select>
+          </label>
           <button type="submit">Новая игра</button>
         </form>
-        <p class="hint">
-          Hard Mode даёт ограничение по попыткам: чем шире диапазон, тем больше шансов тебе понадобится.
+        <p id="difficultyHint" class="hint">
+          Режимы Easy, Hard и Expert ограничивают количество попыток. Expert скрывает подсказки «больше/меньше».
         </p>
       </section>
     </main>
 
+    <div id="confettiLayer" class="confetti-layer" aria-hidden="true"></div>
     <script src="script.js"></script>
   </body>
 </html>
