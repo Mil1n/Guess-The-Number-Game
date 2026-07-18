@@ -21,12 +21,20 @@
             <strong id="rangeLabel">1–100</strong>
           </div>
           <div>
+            <span class="stat-label">Режим</span>
+            <strong id="modeLabel">Normal</strong>
+          </div>
+          <div>
             <span class="stat-label">Попытки</span>
             <strong id="attemptsLabel">0</strong>
           </div>
           <div>
             <span class="stat-label">Рекорд</span>
             <strong id="recordLabel">—</strong>
+          </div>
+          <div>
+            <span class="stat-label">Возможный диапазон</span>
+            <strong id="possibleRangeLabel">1–100</strong>
           </div>
         </div>
 
@@ -41,6 +49,7 @@
               max="100"
               placeholder="Введи число"
               autocomplete="off"
+              aria-describedby="message historyTitle"
               required
             />
             <button type="submit">Проверить</button>
@@ -51,31 +60,80 @@
           Привет, игрок! Я уже загадал число от 1 до 100. Сделай первый ход 🚀
         </p>
 
-        <div class="actions" aria-label="Настройки игры">
+        <div class="actions" aria-label="Действия игры">
           <button id="newGameButton" type="button" class="secondary">Сыграть ещё</button>
-          <button id="hardModeButton" type="button" class="secondary">Hard Mode: выкл</button>
+          <button id="dailyButton" type="button" class="secondary">Daily Challenge</button>
+          <button id="giveUpButton" type="button" class="secondary danger-action">Сдаться</button>
         </div>
+
+        <section class="history-card" aria-labelledby="historyTitle">
+          <h2 id="historyTitle">История попыток</h2>
+          <p id="emptyHistory" class="empty-history">Пока ходов нет — начни с любого числа в диапазоне.</p>
+          <ol id="historyList" class="history-list"></ol>
+        </section>
+
+        <section class="stats-card" aria-labelledby="statsTitle">
+          <h2 id="statsTitle">Статистика игрока</h2>
+          <dl class="player-stats">
+            <div><dt>Игр</dt><dd id="gamesLabel">0</dd></div>
+            <div><dt>Побед</dt><dd id="winRateLabel">0%</dd></div>
+            <div><dt>Серия</dt><dd id="streakLabel">0/0</dd></div>
+            <div><dt>Среднее</dt><dd id="averageAttemptsLabel">—</dd></div>
+          </dl>
+        </section>
       </section>
 
       <section class="settings-card" aria-labelledby="settings-title">
         <h2 id="settings-title">Настроить диапазон</h2>
         <form id="rangeForm" class="range-form">
-          <label>
+          <label for="minInput">
             От
             <input id="minInput" type="number" value="1" required />
           </label>
-          <label>
+          <label for="maxInput">
             До
             <input id="maxInput" type="number" value="100" required />
           </label>
+          <label for="difficultySelect">
+            Сложность
+            <select id="difficultySelect" aria-describedby="difficultyHint">
+              <option value="easy">Easy — больше попыток</option>
+              <option value="normal" selected>Normal — без лимита</option>
+              <option value="hard">Hard — строгий лимит</option>
+              <option value="expert">Expert — без направления</option>
+            </select>
+          </label>
           <button type="submit">Новая игра</button>
         </form>
-        <p class="hint">
-          Hard Mode даёт ограничение по попыткам: чем шире диапазон, тем больше шансов тебе понадобится.
+        <p id="difficultyHint" class="hint">
+          Режимы Easy, Hard, Expert и Daily ограничивают количество попыток. Expert и Daily скрывают направление.
         </p>
+        <p class="hint shortcut-hint">Горячие клавиши: <kbd>Esc</kbd> очищает ввод, <kbd>Alt</kbd> + <kbd>N</kbd> начинает новый раунд, <kbd>Alt</kbd> + <kbd>D</kbd> запускает Daily Challenge.</p>
+
+        <section class="records-card" aria-labelledby="recordsTitle">
+          <h2 id="recordsTitle">Таблица рекордов</h2>
+          <p class="hint">Рекорды считаются отдельно для каждого диапазона и режима.</p>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Диапазон</th>
+                <th scope="col">Режим</th>
+                <th scope="col">Рекорд</th>
+              </tr>
+            </thead>
+            <tbody id="recordsTableBody"></tbody>
+            <tbody>
+              <tr id="noRecordsRow">
+                <td colspan="3">Рекордов пока нет</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
       </section>
     </main>
 
+    <div id="confettiLayer" class="confetti-layer" aria-hidden="true"></div>
+    <script src="game-core.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
