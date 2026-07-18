@@ -104,6 +104,86 @@ function getLoseMessage() {
   return `Режим ${getModeText()} безжалостен: попытки закончились 😵 Загаданное число было ${secret}. Нажми «Сыграть ещё» и возьми реванш!`;
 }
 
+function calculateAttemptLimit(from, to, mode) {
+  const baseLimit = calculateBaseLimit(from, to);
+
+  if (mode === 'easy') {
+    return baseLimit + 4;
+  }
+
+  if (mode === 'hard') {
+    return Math.max(3, baseLimit - 1);
+  }
+
+  if (mode === 'expert') {
+    return Math.max(3, baseLimit - 2);
+  }
+
+  return baseLimit;
+}
+
+function hasAttemptLimit() {
+  return difficulty !== 'normal';
+}
+
+function getAttemptWord(count, accusative = false) {
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+
+  if (mod10 === 1 && mod100 !== 11) {
+    return accusative ? 'попытку' : 'попытка';
+  }
+
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) {
+    return 'попытки';
+  }
+
+  return 'попыток';
+}
+
+function formatAttempts(count, accusative = false) {
+  return `${count} ${getAttemptWord(count, accusative)}`;
+}
+
+function getTemperatureText(distance) {
+  const rangeSize = max - min + 1;
+  const ratio = distance / rangeSize;
+
+  if (ratio <= 0.03) {
+    return 'Обжигающе горячо 🔥';
+  }
+
+  if (ratio <= 0.08) {
+    return 'Очень тепло 🌡️';
+  }
+
+  if (ratio <= 0.18) {
+    return 'Теплее, чем кажется ✨';
+  }
+
+  if (ratio >= 0.45) {
+    return 'Ледяной промах 🧊';
+  }
+
+  return 'Пока прохладно ❄️';
+}
+
+function getProgressText(distance) {
+  if (previousDistance === null) {
+    return 'Запоминаю первый ориентир.';
+  }
+
+  if (distance < previousDistance) {
+    return 'Становится теплее.';
+  }
+
+  if (distance > previousDistance) {
+    return 'Осторожно, стало холоднее.';
+  }
+
+  return 'Дистанция до цели почти не изменилась.';
+}
+
 function updateStats() {
   const currentRecord = getCurrentRecord();
   rangeLabel.textContent = `${min}–${max}`;
@@ -232,6 +312,11 @@ function handleWin() {
 function addGuessToHistory(value, hint) {
   guessHistory.push({ value, hint });
   guessedNumbers.add(value);
+  renderHistory();
+}
+
+function addGuessToHistory(value, hint) {
+  guesses.add({ value, hint });
   renderHistory();
 }
 
